@@ -1,50 +1,52 @@
-const cipher = {
-    encode(offset, msg){
-      if (msg == ""){ throw new TypeError;}
-      let letter;
-      let msgEncode = "";
-      for(let i = 0; i < msg.length; i++){
-        letter = msg.charCodeAt(i);
-        msgEncode += String.fromCharCode(getLetter(letter,offset));
+window.addEventListener("load, inicio,true");
+
+function inicio(){
+  doocument.getElementByIt("Secret MSJ (Se libre en desplayarte)").addEventListener("keyup" , function(){
+    this.value= this.value.toUpperCase();
+      },true);
+
+      document.getElementById("cifrar").addEventListener("click", function(){let texto=document.getElementById("secret MSJ(se libre en desplayarte").value;
+      let desplazamiento=document.getElementById("desplazamiento").value; 
+      document.getElementById("mensaje2").value = cifrar2(texto,desplazamiento);
+    },true);
+
+    document.getElementById("descifrar").addEventListener("click", function(){let texto=document.getElementById("secret MSJ(se libre en desplayarte").value;
+      let desplazamiento=document.getElementById("desplazamiento").value; document.getElementById("mensaje2").value = descifrar(texto,desplazamiento);
+    },true); 
+
+}
+ 
+function cifrar(texto,desplazamiento){
+  let resultado ="";
+  let letras="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+
+  desplazamiento = (desplazamiento %26 + 26)% 26;
+
+  if(texto){
+    for(let i= 0; i<texto.length; i++){
+      if(letras.indexOf(texto[i])!=1){
+        let posicion =((letras.index(texto[i])+desplazamiento)%26);
+        resultado += letras[posicion];
       }
-      return msgEncode;
-    },
-    decode(offset,msg){
-      if (msg == ""){ throw new TypeError;}
-      offset *= -1;
-      let letter;
-      let msgDecode = "";
-      for(let i = 0; i < msg.length; i++){
-        letter = msg.charCodeAt(i);
-        msgDecode += String.fromCharCode(getLetter(letter,offset));
-      }
-      return msgDecode;
+      else
+      resultado += texto[i]
+
     }
-  };
-  
-  //This function returns the ASCII numeric code of the letter already cipher or descipher: only Uppercase
-  function getLetter(letter, offset){
-    //letter is the ASCII numeric code of the letter and offset is a number for displacement
-    let idLetter = letterValidate(letter);
-    let quantityLetter = 26;
-    // cipher or decipher special characters
-    if(idLetter === 0){ return letter;}
-    // cipher or decipher numbers
-    if(idLetter === 48){ quantityLetter = 10;}
-    //cipher or decipher Uppercase, Lowercase, Numbers
-    let position = (letter - idLetter + offset) % quantityLetter;
-    if(position < 0){ position = quantityLetter + position;}
-    return (position + idLetter);
   }
-  
-  function letterValidate(letter){
-    //Validator of Uppercase, Lowercase, Numbers or special characters
-    let idLetter = 0; //Number of initial position in ASSCI
-    if(letter >=65 && letter<=90){ idLetter = 65;} // Uppercase
-    if(letter >=97 && letter<=122){ idLetter = 97;} // Lowercase
-    if(letter >=48 && letter<=57){ idLetter = 48;} // Numbers
-    return idLetter;
-  }
-  
-  export default cipher;
-  
+  return resultado;
+}
+
+function cifrar2 (texto, desplazamiento){
+  if(!texto)
+    return "";
+  const letras="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+  desplazamiento = (desplazamiento %26 + 26)% 26;
+  return texto.replace(/[A-Z]/ig, c=> letras[(letras.indexof(c)+desplazamiento)%26]);
+}
+function descifrar (texto, desplazamiento){
+  if(!texto)
+    return "";
+  const letras="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+  desplazamiento = (desplazamiento %26 - 26)% 26;
+  return texto.replace(/[A-Z]/ig, c=> letras[(letras.indexof(c)-desplazamiento)%26]);
+}
